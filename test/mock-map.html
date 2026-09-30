@@ -1,0 +1,37 @@
+<!doctype html><html><head><title>Map</title></head><body>
+<div id="map" style="width:600px;height:400px;background:#dde"></div>
+<table id="trucks"><tbody></tbody></table>
+<script>
+// Minimal google.maps stub with MVCObject-like semantics (constructor -> setValues -> setX)
+(function(){
+  function MVC(){ this._v={}; }
+  MVC.prototype.get=function(k){return this._v[k];};
+  MVC.prototype.set=function(k,v){this._v[k]=v;};
+  MVC.prototype.setValues=function(o){for(var k in o){var f='set'+k[0].toUpperCase()+k.slice(1); if(typeof this[f]==='function') this[f](o[k]); else this.set(k,o[k]);}};
+  function Marker(o){MVC.call(this); window.__allMarkers.push(this); if(o) this.setValues(o);}
+  Marker.prototype=Object.create(MVC.prototype);
+  ['map','title','label','icon','position'].forEach(function(k){var C=k[0].toUpperCase()+k.slice(1);
+    Marker.prototype['set'+C]=function(v){this.set(k,v);}; Marker.prototype['get'+C]=function(){return this.get(k);};});
+  window.__allMarkers=[];
+  setTimeout(function(){ window.google={maps:{Marker:Marker,Map:function(){}}}; startApp(); }, 200); // loads after userscript
+})();
+var statuses={ '101':'To Job', '102':'Pouring', '203':'Returning', '204':'At Plant' };
+var markers={};
+function startApp(){
+  var map={name:'MAP'};
+  Object.keys(statuses).forEach(function(id){
+    markers[id]=new google.maps.Marker({map:map, title:'Truck '+id+' - '+statuses[id], icon:'/img/truck_'+statuses[id].replace(' ','').toLowerCase()+'.png', position:{lat:1,lng:2}});
+  });
+  poll();
+}
+function poll(){
+  fetch('/dispatch/TruckData.jsp').then(r=>r.json()).then(d=>{
+    var tb=document.querySelector('#trucks tbody'); tb.innerHTML='';
+    d.trucks.forEach(function(t){
+      var m=markers[t.truckNo]; m.setTitle('Truck '+t.truckNo+' - '+t.statusDesc); m.setPosition({lat:t.lat,lng:t.lon});
+      var tr=document.createElement('tr'); tr.className='truckRow'; tr.innerHTML='<td>'+t.truckNo+'</td><td>'+t.statusDesc+'</td>'; tb.appendChild(tr);
+    });
+    setTimeout(poll, 300);
+  });
+}
+</script></body></html>
