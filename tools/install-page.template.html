@@ -1,0 +1,84 @@
+<title>My Trucks Bookmark</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one narrow instruction column, a single draggable "ticket" at the top, numbered steps because order matters */
+:root {
+  --bg: #f4f6f9; --surface: #ffffff; --fg: #18212e; --muted: #5b6678; --line: #d8dee8;
+  --accent: #1f3a5f; --accent-fg: #ffffff; --idle: #b86e00; --idle-bg: #fdf0da;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11161e; --surface: #19212c; --fg: #e6ebf2; --muted: #9aa6b8; --line: #2c3746;
+  --accent: #8fb4e8; --accent-fg: #0e1622; --idle: #f2b456; --idle-bg: #3a2a10; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #11161e; --surface: #19212c; --fg: #e6ebf2; --muted: #9aa6b8; --line: #2c3746;
+  --accent: #8fb4e8; --accent-fg: #0e1622; --idle: #f2b456; --idle-bg: #3a2a10; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font: 16px/1.55 var(--sans); }
+.wrap { max-width: 640px; margin: 0 auto; padding-inline: 16px; padding-block: 40px 56px; display: grid; gap: 28px; }
+h1 { font-size: 1.75rem; line-height: 1.2; margin: 0; text-wrap: balance; }
+.lede { color: var(--muted); margin: 6px 0 0; max-width: 60ch; }
+.ticket { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: grid; gap: 14px; justify-items: start; }
+.bm { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: var(--accent-fg); text-decoration: none;
+  font-weight: 700; padding: 10px 18px; border-radius: 8px; cursor: grab; }
+.bm:focus-visible, button:focus-visible { outline: 3px solid var(--idle); outline-offset: 2px; }
+.hint { color: var(--muted); font-size: .9rem; margin: 0; }
+ol { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 18px; }
+ol > li { counter-increment: s; display: grid; grid-template-columns: 2rem 1fr; gap: 12px; }
+ol > li::before { content: counter(s); font: 600 .95rem var(--mono); width: 2rem; height: 2rem; border-radius: 50%;
+  display: grid; place-items: center; border: 1px solid var(--line); background: var(--surface); }
+ol > li > div { min-width: 0; }
+li strong { display: block; }
+li p { margin: 2px 0 0; color: var(--muted); }
+kbd { font: .85em var(--mono); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; background: var(--surface); color: var(--fg); }
+.pill { font: 600 .8rem var(--sans); background: var(--idle-bg); color: var(--idle); padding: 1px 8px; border-radius: 10px; }
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; }
+summary { cursor: pointer; font-weight: 600; }
+details > div { display: grid; gap: 10px; margin-top: 12px; }
+details p { margin: 0; color: var(--muted); }
+textarea { width: 100%; box-sizing: border-box; height: 90px; font: 12px var(--mono); background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 6px; padding: 8px; }
+button { font: 600 .95rem var(--sans); background: var(--surface); color: var(--fg); border: 1px solid var(--line); border-radius: 6px; padding: 7px 14px; cursor: pointer; justify-self: start; }
+.note { font-size: .9rem; color: var(--muted); border-top: 1px solid var(--line); padding-top: 18px; margin: 0; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>My Trucks bookmark for TrackIt</h1>
+    <p class="lede">Shows only your trucks on the dispatch map and chimes when one goes <span class="pill">Idle</span> on its way back to the plant. It's a bookmark, so it needs no browser extension.</p>
+  </header>
+
+  <section class="ticket" aria-label="The bookmark">
+    <a class="bm" id="bm" href="__BOOKMARKLET__" title="Drag me to your bookmarks bar" onclick="event.preventDefault()">🚚 My Trucks</a>
+    <p class="hint">Drag this button onto your bookmarks bar. Clicking it here does nothing.</p>
+  </section>
+
+  <ol>
+    <li><div><strong>Show your bookmarks bar</strong><p>Press <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>B</kbd> in Chrome or Edge.</p></div></li>
+    <li><div><strong>Drag the “My Trucks” button onto it</strong><p>If dragging doesn’t work, use “Add it by hand” below.</p></div></li>
+    <li><div><strong>Open the TrackIt map and log in</strong><p>trackit-eu.commandalkon.io/dispatch/Map.jsp</p></div></li>
+    <li><div><strong>Click “My Trucks” on the bookmarks bar</strong><p>A panel appears in the top right. Tick your trucks or type their numbers and press Enter. Your choices are remembered.</p></div></li>
+    <li><div><strong>Click once anywhere on the map</strong><p>Browsers only allow sound after a click. Use “Test sound” in the panel to check the volume.</p></div></li>
+  </ol>
+
+  <details>
+    <summary>Add it by hand</summary>
+    <div>
+      <p>Copy the code, then right-click the bookmarks bar, choose <b>Add page…</b>, name it <b>My Trucks</b> and paste the code into the URL box.</p>
+      <label for="code" class="hint">Bookmark code (about __SIZE__ KB)</label>
+      <textarea id="code" readonly>__BOOKMARKLET__</textarea>
+      <button id="copy" type="button">Copy code</button>
+    </div>
+  </details>
+
+  <p class="note">Click the bookmark again each time you reload or reopen the map. If clicking it does nothing, your IT settings may block bookmarks that run code. In that case, send the details to Claude.</p>
+</div>
+
+<script>
+const btn = document.getElementById('copy'), ta = document.getElementById('code');
+btn.addEventListener('click', () => {
+  const done = () => { btn.textContent = 'Copied'; setTimeout(() => { btn.textContent = 'Copy code'; }, 2000); };
+  const fallback = () => { ta.focus(); ta.select(); btn.textContent = 'Press Ctrl+C to copy'; };
+  navigator.clipboard ? navigator.clipboard.writeText(ta.value).then(done, fallback) : fallback();
+});
+</script>

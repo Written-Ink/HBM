@@ -6,7 +6,18 @@ A browser add-on (userscript) for the Command Alkon TrackIt dispatch map
 - **Shows only your trucks** on the map (and in on-page truck lists, once you point it at one).
 - **Plays a chime** (plus an optional desktop popup) when one of your trucks turns **idle**, meaning it's heading back to base.
 
-## Install
+## Install without an extension (bookmarklet)
+
+For computers where browser extensions are blocked.
+
+1. Run `node tools/build-bookmarklet.mjs`. It writes `dist/install.html`, `dist/bookmarklet.txt` and `dist/bookmarklet.js`.
+2. Open `dist/install.html` and drag the **🚚 My Trucks** button onto the bookmarks bar.
+   Or create a bookmark by hand and paste the contents of `dist/bookmarklet.txt` as its URL.
+3. Open the TrackIt map, log in and click the bookmark. Do this again each time the page is reloaded.
+
+The bookmarklet also starts the tool inside the map's frame if TrackIt shows the map in a frame.
+
+## Install with Tampermonkey
 
 1. Install the **Tampermonkey** extension (Chrome, Edge, Firefox or Safari).
 2. Open the Tampermonkey dashboard, choose **+** (new script), paste in the contents of
@@ -55,3 +66,4 @@ statuses show as `icon:truck_yellow.png`, the status comes only from the icon co
 
 `node test/run.mjs` runs a headless Chromium test against a mock map page (`test/mock-map.html`) that
 has a stubbed Google Maps API, a JSON truck feed and a truck table. Needs Playwright.
+`node test/bookmarklet.mjs` tests the bookmarklet build, started after the page loads, on the page itself and inside a frame.

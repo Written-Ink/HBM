@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TrackIt Truck Filter & Idle Alert
 // @namespace    https://github.com/written-ink/hbm
-// @version      1.0.0
+// @version      1.1.0
 // @description  Show only your trucks on the Command Alkon TrackIt dispatch map, and play an alert when one of them goes idle (returning to base).
 // @match        https://trackit-eu.commandalkon.io/dispatch/*
 // @match        https://*.commandalkon.io/dispatch/*
@@ -522,7 +522,7 @@
   }
 
   function shouldShowPanel() {
-    return /map\.jsp/i.test(location.pathname) || trucks.size > 0;
+    return W.__tkfForcePanel || /map\.jsp/i.test(location.pathname) || trucks.size > 0;
   }
 
   function mount() {
@@ -641,7 +641,7 @@
   function diagText() {
     return JSON.stringify({
       page: location.href.split('?')[0],
-      version: '1.0.0',
+      version: '1.1.0',
       libs: { google: !!(W.google && W.google.maps), leaflet: !!(W.L && W.L.version), ol: !!W.ol },
       sources: [...diag.sources],
       trucks: [...trucks.values()].slice(0, 40).map((t) => ({ id: t.id, eff: t.eff, status: t.status })),
